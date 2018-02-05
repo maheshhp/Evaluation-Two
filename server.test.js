@@ -103,7 +103,7 @@ describe('Testing the Hapi server that processes the requests for API calls', ()
     });
   });
   test('Should populate database with book data', (done) => {
-    Server.inject({ method: 'POST', url: '/books/populateBookDetails', payload: JSON.stringify(response.result) }, (res) => {
+    Server.inject({ method: 'GET', url: '/books/populateBookDetails' }, (res) => {
       expect(res.result.statusCode).toEqual(201);
       done();
     });
@@ -111,7 +111,7 @@ describe('Testing the Hapi server that processes the requests for API calls', ()
   test('Should populate database with book data', (done) => {
     const request = {
       method: 'POST',
-      url: '/books/booksRating/1',
+      url: '/books/booksRating',
       payload: JSON.stringify({ like: 'yes' }),
     };
     Server.inject(request, (response) => {

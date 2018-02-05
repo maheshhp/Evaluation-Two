@@ -1,4 +1,5 @@
 const https = require('https');
+const http = require('http');
 const Models = require('../models');
 
 module.exports = [{
@@ -66,7 +67,7 @@ module.exports = [{
   },
 },
 {
-  method: 'POST',
+  method: 'GET',
   path: '/books/populateBookDetails',
   handler: (request, response) => {
     let apiOneResponse = '';
@@ -127,5 +128,12 @@ module.exports = [{
         });
       });
     });
+  },
+},
+{
+  method: 'POST',
+  path: '/books/books/booksRating',
+  handler: (request, response) => {
+    response('no');
   },
 }];
