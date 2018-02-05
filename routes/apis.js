@@ -1,4 +1,5 @@
 const https = require('https');
+const Models = require('../models');
 
 module.exports = [{
   method: 'GET',
@@ -68,6 +69,6 @@ module.exports = [{
   method: 'GET',
   path: '/books/populateBookDetails',
   handler: (request, response) => {
-    response('Welcome to the API');
+    response(false);
   },
 }];
