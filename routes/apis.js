@@ -63,4 +63,11 @@ module.exports = [{
       });
     });
   },
+},
+{
+  method: 'GET',
+  path: '/books/populateBookDetails',
+  handler: (request, response) => {
+    response('Welcome to the API');
+  },
 }];

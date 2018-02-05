@@ -102,4 +102,14 @@ describe('Testing the Hapi server that processes the requests for API calls', ()
       done();
     });
   });
+  test('Should populate database with book data', (done) => {
+    const request = {
+      method: 'GET',
+      url: '/books/populateBookDetails',
+    };
+    Server.inject(request, (response) => {
+      expect(response.result).toEqual(firstApiTestJson);
+      done();
+    });
+  });
 });
