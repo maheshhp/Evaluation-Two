@@ -105,11 +105,14 @@ describe('Testing the Hapi server that processes the requests for API calls', ()
   test('Should populate database with book data', (done) => {
     const request = {
       method: 'GET',
-      url: '/books/populateBookDetails',
+      url: '/books/booksWithRatings',
     };
     Server.inject(request, (response) => {
-      expect(response.result).toEqual(false);
-      done();
+      Server.inject({ method: 'POST', url: '/books/populateBookDetails', payload: JSON.stringify(response.result) }, (res) => {
+        console.log(res.result);
+        expect(res.result.statusCode).toEqual(201);
+        done();
+      });
     });
   });
 });
