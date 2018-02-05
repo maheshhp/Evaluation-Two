@@ -103,16 +103,20 @@ describe('Testing the Hapi server that processes the requests for API calls', ()
     });
   });
   test('Should populate database with book data', (done) => {
+    Server.inject({ method: 'POST', url: '/books/populateBookDetails', payload: JSON.stringify(response.result) }, (res) => {
+      expect(res.result.statusCode).toEqual(201);
+      done();
+    });
+  });
+  test('Should populate database with book data', (done) => {
     const request = {
-      method: 'GET',
-      url: '/books/booksWithRatings',
+      method: 'POST',
+      url: '/books/booksRating/1',
+      payload: JSON.stringify({ like: 'yes' }),
     };
     Server.inject(request, (response) => {
-      Server.inject({ method: 'POST', url: '/books/populateBookDetails', payload: JSON.stringify(response.result) }, (res) => {
-        console.log(res.result);
-        expect(res.result.statusCode).toEqual(201);
-        done();
-      });
+      expect(response.result.likeStatus).toEqual('yes');
+      done();
     });
   });
 });
