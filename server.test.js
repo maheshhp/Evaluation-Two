@@ -108,7 +108,7 @@ describe('Testing the Hapi server that processes the requests for API calls', ()
       url: '/books/populateBookDetails',
     };
     Server.inject(request, (response) => {
-      expect(response.result).toEqual(firstApiTestJson);
+      expect(response.result).toEqual(false);
       done();
     });
   });

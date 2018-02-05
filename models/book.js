@@ -1,14 +1,14 @@
 module.exports = (sequelize, DataTypes) => {
-  const book = sequelize.define('book', {
+  const book = sequelize.define('books', {
     bookId: {
-      type: sequelize.INTEGER,
+      type: DataTypes.INTEGER,
       primaryKey: true,
       autoIncrement: false,
     },
     name: DataTypes.STRING,
     author: DataTypes.STRING,
-    rating: sequelize.INTEGER,
-    like: sequelize.INTEGER,
+    rating: DataTypes.INTEGER,
+    like: DataTypes.INTEGER,
   }, {
     classMethods: {
       associate(models) {
