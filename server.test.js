@@ -112,7 +112,7 @@ describe('Testing the Hapi server that processes the requests for API calls', ()
     const request = {
       method: 'POST',
       url: '/books/booksRating',
-      payload: JSON.stringify({ like: 'yes' }),
+      payload: JSON.stringify({ bookId: 1, like: 'yes' }),
     };
     Server.inject(request, (response) => {
       expect(response.result.likeStatus).toEqual('yes');

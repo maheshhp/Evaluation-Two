@@ -134,6 +134,9 @@ module.exports = [{
   method: 'POST',
   path: '/books/books/booksRating',
   handler: (request, response) => {
+    const bookId = request.payload.bookId;
+    const likeStatus = request.payload.like;
+    // Check presence of book entry in DB - populate DB earlier - and like status and respond
     response('no');
   },
 }];
