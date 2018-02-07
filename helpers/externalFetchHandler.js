@@ -1,5 +1,10 @@
 const https = require('https');
 
+// params: callback - Function to be called once fetch from external API is
+// complete and results are formatted
+// returns: Calls callback function with required JSON format -
+// {'author': [{author, bookId, name, rating}]}
+
 const getExternalContent = (callback) => {
   let apiOneResponse = '';
   const newBookJson = {};

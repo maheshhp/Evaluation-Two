@@ -1,5 +1,10 @@
 const Models = require('../models');
 
+// params: values - Json string, containing data to be filled into database
+// callback - Function to be called once fetch from external API is
+// complete and results are formatted
+// returns: Calls callback function with database entry transaction status - true/false
+
 const populateDb = (values, callback) => {
   const resCounter = 0;
   Models.books.destroy({

@@ -104,7 +104,7 @@ describe('Testing the Hapi server that processes the requests for API calls', ()
   });
   test('Should populate database with book data', (done) => {
     Server.inject({ method: 'GET', url: '/books/populateBookDetails' }, (res) => {
-      expect(res.result.statusCode).toEqual(201);
+      expect(res.result.statusCode).toBe(201);
       done();
     });
   });
@@ -116,7 +116,19 @@ describe('Testing the Hapi server that processes the requests for API calls', ()
     };
     Server.inject(request, (response) => {
       console.log(response.result.statusCode);
-      expect(response.result.likeStatus).toEqual('yes');
+      expect(response.result.likeStatus).toMatch('yes');
+      done();
+    });
+  });
+  test('Should return like status of book with ID = 21 as undefined', (done) => {
+    const request = {
+      method: 'POST',
+      url: '/books/booksRating',
+      payload: JSON.stringify({ bookId: 21, like: 'yes' }),
+    };
+    Server.inject(request, (response) => {
+      console.log(response.result.statusCode);
+      expect(response.result.likeStatus).toBe(undefined);
       done();
     });
   });

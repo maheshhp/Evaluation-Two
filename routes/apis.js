@@ -1,5 +1,3 @@
-const https = require('https');
-const http = require('http');
 const Models = require('../models');
 const externalFetchHandler = require('../helpers/externalFetchHandler');
 const populateDb = require('../helpers/populateDb');
@@ -70,7 +68,6 @@ module.exports = [{
               throw new Error('Invalid like input');
             })
             .then(() => {
-              console.log('Successfully thenning');
               if (request.payload.like === 'yes') {
                 response({
                   likeStatus: 'yes',
