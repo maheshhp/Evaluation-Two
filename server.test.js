@@ -108,13 +108,14 @@ describe('Testing the Hapi server that processes the requests for API calls', ()
       done();
     });
   });
-  test('Should populate database with book data', (done) => {
+  test('Should make the like status of book with ID = 1 as true', (done) => {
     const request = {
       method: 'POST',
       url: '/books/booksRating',
       payload: JSON.stringify({ bookId: 1, like: 'yes' }),
     };
     Server.inject(request, (response) => {
+      console.log(response.result.statusCode);
       expect(response.result.likeStatus).toEqual('yes');
       done();
     });
