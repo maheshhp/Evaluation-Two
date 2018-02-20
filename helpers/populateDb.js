@@ -18,7 +18,6 @@ const populateDb = (values, callback) => {
           name: item.name,
           author: item.author,
           rating: item.rating,
-          like: 0,
         }).then((result) => {
         })
           .catch((error) => {

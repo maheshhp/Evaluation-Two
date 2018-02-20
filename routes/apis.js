@@ -44,57 +44,49 @@ module.exports = [{
   method: 'POST',
   path: '/books/booksRating',
   handler: (request, response) => {
-    const fetchCallback = (values) => {
-      const dbCallback = (transactionStatus) => {
-        if (transactionStatus) {
-          Models.books.findOne({
-            where: {
-              bookId: request.payload.bookId,
-            },
-          })
-            .then((book) => {
-              if (book === null) {
-                throw new Error('No such book.');
-              }
-              if (request.payload.like === 'yes') {
-                return book.updateAttributes({
-                  like: 1,
-                });
-              } else if (request.payload.like === 'no') {
-                return book.updateAttributes({
-                  like: 0,
-                });
-              }
-              throw new Error('Invalid like input');
-            })
-            .then(() => {
-              if (request.payload.like === 'yes') {
-                response({
-                  likeStatus: 'yes',
-                  responseCode: 200,
-                });
-              } else {
-                response({
-                  likeStatus: 'no',
-                  responseCode: 200,
-                });
-              }
-            })
-            .catch(() => {
-              response({
-                likeStatus: undefined,
-                responseCode: 500,
-              });
-            });
+    Models.books.findOne({
+      where: {
+        bookId: request.payload.bookId,
+      },
+    })
+      .then((book) => {
+        if (book === null) {
+          throw new Error('No such book.');
+        }
+        if (request.payload.like === 'yes') {
+          return book.updateAttributes({
+            like: 1,
+          });
+        } else if (request.payload.like === 'no') {
+          return book.updateAttributes({
+            like: 0,
+          });
+        }
+        throw new Error('Invalid like input');
+      })
+      .then((dbResponse) => {
+        if (dbResponse.like === 1) {
+          response({
+            likeStatus: 'yes',
+            responseCode: 200,
+          });
+        } else if (dbResponse.like === 0) {
+          response({
+            likeStatus: 'no',
+            responseCode: 200,
+          });
         } else {
           response({
             likeStatus: undefined,
             responseCode: 404,
           });
         }
-      };
-      populateDb(JSON.stringify(values), dbCallback);
-    };
-    externalFetchHandler(fetchCallback);
+      })
+      .catch((error) => {
+        response({
+          likeStatus: error,
+          responseCode: 500,
+        });
+      });
   },
 }];
