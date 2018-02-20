@@ -13,13 +13,11 @@ const getExternalContent = (callback) => {
     extApiResponse.on('data', (data) => {
       apiOneResponse += data.toString();
     });
-    extApiResponse.on('end', (end) => {
+    extApiResponse.on('end', () => {
       apiOneResponse = JSON.parse(apiOneResponse);
-      let bookIds = Object.keys(apiOneResponse.books);
       const promiseArray = [];
-      bookIds = bookIds.map(bid => apiOneResponse.books[bid].id);
       apiOneResponse.books.forEach((item) => {
-        promiseArray.push(new Promise((resolve, reject) => {
+        promiseArray.push(new Promise((resolve) => {
           https.get(`https://5gj1qvkc5h.execute-api.us-east-1.amazonaws.com/dev/findBookById/${item.id}`, (secResponse) => {
             secResponse.setEncoding('UTF8');
             const newBookObject = {
@@ -31,7 +29,7 @@ const getExternalContent = (callback) => {
             secResponse.on('data', (data) => {
               newBookObject.rating = JSON.parse(data.toString()).rating;
             });
-            secResponse.on('end', (end) => {
+            secResponse.on('end', () => {
               newBookObject.id = item.id;
               newBookObject.name = item.Name;
               newBookObject.author = item.Author;

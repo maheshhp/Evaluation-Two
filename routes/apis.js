@@ -1,5 +1,6 @@
 const Models = require('../models');
 const externalFetchHandler = require('../helpers/externalFetchHandler');
+const likeHandler = require('../helpers/likeHandler');
 const populateDb = require('../helpers/populateDb');
 
 module.exports = [{
@@ -24,8 +25,8 @@ module.exports = [{
   path: '/books/populateBookDetails',
   handler: (request, response) => {
     const fetchCallback = (values) => {
-      const dbCallback = (transactionStatus) => {
-        if (transactionStatus) {
+      populateDb(JSON.stringify(values)).then((bookInsertResult) => {
+        if (bookInsertResult) {
           response({
             statusCode: 201,
           });
@@ -34,8 +35,7 @@ module.exports = [{
             statusCode: 500,
           });
         }
-      };
-      populateDb(JSON.stringify(values), dbCallback);
+      });
     };
     externalFetchHandler(fetchCallback);
   },
@@ -51,34 +51,24 @@ module.exports = [{
     })
       .then((book) => {
         if (book === null) {
-          throw new Error('No such book.');
-        }
-        if (request.payload.like === 'yes') {
-          return book.updateAttributes({
-            like: 1,
-          });
-        } else if (request.payload.like === 'no') {
-          return book.updateAttributes({
-            like: 0,
-          });
-        }
-        throw new Error('Invalid like input');
-      })
-      .then((dbResponse) => {
-        if (dbResponse.like === 1) {
           response({
-            likeStatus: 'yes',
-            responseCode: 200,
-          });
-        } else if (dbResponse.like === 0) {
-          response({
-            likeStatus: 'no',
-            responseCode: 200,
+            likeStatus: 'No book found',
+            responseCode: 404,
           });
         } else {
-          response({
-            likeStatus: undefined,
-            responseCode: 404,
+          likeHandler(request.payload).then((likeResponse) => {
+            console.log('like ==>', likeResponse);
+            if (likeResponse) {
+              response({
+                likeStatus: request.payload.like,
+                responseCode: 200,
+              });
+            } else {
+              response({
+                likeStatus: 'Error updating like',
+                responseCode: 500,
+              });
+            }
           });
         }
       })

@@ -115,7 +115,6 @@ describe('Testing the Hapi server that processes the requests for API calls', ()
       payload: JSON.stringify({ bookId: 1, like: 'yes' }),
     };
     Server.inject(request, (response) => {
-      console.log(response.result.statusCode);
       expect(response.result.likeStatus).toMatch('yes');
       done();
     });
@@ -127,8 +126,10 @@ describe('Testing the Hapi server that processes the requests for API calls', ()
       payload: JSON.stringify({ bookId: 21, like: 'yes' }),
     };
     Server.inject(request, (response) => {
-      console.log(response.result.statusCode);
-      expect(response.result.likeStatus).toBe(undefined);
+      expect(response.result).toEqual({
+        likeStatus: 'No book found',
+        responseCode: 404,
+      });
       done();
     });
   });

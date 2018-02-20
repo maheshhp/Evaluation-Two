@@ -5,32 +5,28 @@ const Models = require('../models');
 // complete and results are formatted
 // returns: Calls callback function with database entry transaction status - true/false
 
-const populateDb = (values, callback) => {
-  const resCounter = 0;
-  Models.books.destroy({
-    where: {},
-  }).then((result) => {
+const populateDb = values => Models.books.destroy({
+  where: {},
+})
+  .then((bookDesRes) => {
+    Models.book_like.destroy({
+      where: {},
+    });
+  })
+  .then((likeDesRes) => {
     const bookJson = JSON.parse(values);
+    const bookInsertJson = [];
     Object.keys(bookJson).forEach((author) => {
       bookJson[author].forEach((item) => {
-        Models.books.create({
+        bookInsertJson.push(Models.books.create({
           bookId: item.id,
           name: item.name,
           author: item.author,
           rating: item.rating,
-        }).then((result) => {
-        })
-          .catch((error) => {
-            callback(false);
-          });
+        }));
       });
     });
-  })
-    .catch((error) => {
-      console.log(error.toString());
-      callback(false);
-    });
-  callback(true);
-};
+    return Promise.all(bookInsertJson);
+  });
 
 module.exports = populateDb;
