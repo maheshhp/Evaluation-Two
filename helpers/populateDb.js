@@ -8,11 +8,11 @@ const Models = require('../models');
 const populateDb = values => Models.books.destroy({
   where: {},
 })
-  // .then((bookDesRes) => {
-  //   Models.book_like.destroy({
-  //     where: {},
-  //   });
-  // })
+  .then((bookDesRes) => {
+    Models.book_like.destroy({
+      where: {},
+    });
+  })
   .then((likeDesRes) => {
     const bookJson = JSON.parse(values);
     const bookInsertJson = [];
@@ -24,7 +24,11 @@ const populateDb = values => Models.books.destroy({
           name: item.name,
           author: item.author,
           rating: item.rating,
-        }));
+        }).then(bookInsertObject => Models.book_like.upsert({
+          id: item.id,
+          book_id: item.id,
+          like: 0,
+        })));
       });
     });
     return Promise.all(bookInsertJson);
