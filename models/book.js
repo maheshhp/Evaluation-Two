@@ -10,7 +10,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     name: DataTypes.STRING,
     author: DataTypes.STRING,
-    rating: DataTypes.INTEGER,
+    rating: DataTypes.FLOAT,
   }, {
     classMethods: {
       associate(models) {

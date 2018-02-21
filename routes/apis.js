@@ -79,4 +79,32 @@ module.exports = [{
         });
       });
   },
+},
+{
+  method: 'GET',
+  path: '/books/byAuthor',
+  handler: (request, response) => {
+    Models.books.findAll({
+      group: 'author',
+    })
+      .then((books) => {
+        if (books === null) {
+          response({
+            likeStatus: 'No book found',
+            statusCode: 404,
+          });
+        } else {
+          response({
+            books,
+            statusCode: 200,
+          });
+        }
+      })
+      .catch((error) => {
+        response({
+          likeStatus: error,
+          statusCode: 500,
+        });
+      });
+  },
 }];

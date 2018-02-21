@@ -133,4 +133,14 @@ describe('Testing the Hapi server that processes the requests for API calls', ()
       done();
     });
   });
+  test('Should return like status and details of books grouped by author', (done) => {
+    const request = {
+      method: 'GET',
+      url: '/books/byAuthor',
+    };
+    Server.inject(request, (response) => {
+      expect(response.result).toBe(false);
+      done();
+    });
+  });
 });
