@@ -8,17 +8,18 @@ const Models = require('../models');
 const populateDb = values => Models.books.destroy({
   where: {},
 })
-  .then((bookDesRes) => {
-    Models.book_like.destroy({
-      where: {},
-    });
-  })
+  // .then((bookDesRes) => {
+  //   Models.book_like.destroy({
+  //     where: {},
+  //   });
+  // })
   .then((likeDesRes) => {
     const bookJson = JSON.parse(values);
     const bookInsertJson = [];
     Object.keys(bookJson).forEach((author) => {
       bookJson[author].forEach((item) => {
-        bookInsertJson.push(Models.books.create({
+        bookInsertJson.push(Models.books.upsert({
+          id: item.id,
           bookId: item.id,
           name: item.name,
           author: item.author,
