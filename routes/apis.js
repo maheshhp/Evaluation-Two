@@ -84,9 +84,7 @@ module.exports = [{
   method: 'GET',
   path: '/books/byAuthor',
   handler: (request, response) => {
-    Models.books.findAll({
-      group: 'author',
-    })
+    Models.sequelize.query('SELECT books.id, books.name, books.author, books.rating, book_likes.like FROM books INNER JOIN book_likes ON books.id=book_likes.id')
       .then((books) => {
         if (books === null) {
           response({
@@ -94,8 +92,21 @@ module.exports = [{
             statusCode: 404,
           });
         } else {
+          const finalBookJson = {};
+          books[0].forEach((item) => {
+            if (typeof finalBookJson[item.author] === 'undefined') {
+              finalBookJson[item.author] = [];
+            }
+            finalBookJson[item.author].push({
+              author: item.author,
+              id: item.id,
+              name: item.name,
+              rating: item.rating,
+              like: item.like,
+            });
+          });
           response({
-            books,
+            books: finalBookJson,
             statusCode: 200,
           });
         }
