@@ -44,6 +44,7 @@ module.exports = [{
   method: 'POST',
   path: '/books/booksRating',
   handler: (request, response) => {
+    console.log(request.payload);
     Models.books.findOne({
       where: {
         bookId: request.payload.bookId,
